@@ -1,6 +1,6 @@
-ansible version > 2.9
+# ansible version > 2.9
 
-How to deploy:
+# How to deploy:
 1) set hosts file
 
 set all host to vms group
