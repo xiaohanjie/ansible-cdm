@@ -20,15 +20,17 @@ example:
 
 2) set vars file
 
-set cdm_repo # cdm package url
-set cdm_branch #AB/HW
-set cdm_cluster_vip
-set cdm_db_vip
-set disk_device
-set lvm_device
-set fstype
+set cdm_repo  
+# cdm package url  
+set cdm_branch   
+#AB/HW  
+set cdm_cluster_vip  
+set cdm_db_vip  
+set disk_device  
+set lvm_device   
+set fstype   
 
-example:
+example:  
 cdm_repo: "ftp://ftp-ab.aishu.cn/FTP/ci-jobs/AB7.0StorageTest/package/AnyBackupServer/ABNormal/Linux_el7_x64/Linux_el7_x64-latest.tar.gz"
 cdm_branch: AB
 cdm_cluster_vip: 192.168.2.55
