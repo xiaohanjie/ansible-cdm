@@ -1,7 +1,7 @@
 # ansible version > 2.9
 
-# How to deploy:
-1) set hosts file
+How to deploy:
+1) set hosts file (hosts)
 
 set all host to vms group
 set master host to master
@@ -18,7 +18,7 @@ example:
 192.168.2.41  ansible_ssh_user=root ansible_ssh_pass="root123"  
 192.168.2.42  ansible_ssh_user=root ansible_ssh_pass="root123"  
 
-2) set vars file
+2) set vars file (vars.yml)
 
 set cdm_repo #cdm package url  
 set cdm_branch #AB/HW  

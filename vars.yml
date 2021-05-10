@@ -1,0 +1,14 @@
+cdm_repo: "ftp://ftp-ab.aishu.cn/FTP/ci-jobs/AB7.0StorageTest/package/AnyBackupServer/ABNormal/Linux_el7_x64/Linux_el7_x64-latest.tar.gz"
+#cdm_repo: "ftp://ftp-ab.aishu.cn/FTP/ci-jobs/HW8.0/package/CDMServer/HWNormal/Linux_el7_x64/Linux_el7_x64-latest.tar.gz"
+cdm_branch: AB
+cdm_cluster_vip: 192.168.2.55
+cdm_db_vip: 192.168.2.56
+cdm_device:
+    - {device: "/dev/vdb", number: "1"}
+    - {device: "/dev/vdc", number: "1"}
+    - {device: "/dev/vdd", number: "1"}
+cdm_lvm_device:
+    - {srcpath: "/dev/vg01/lv01", destpath: "/vol1", vgname: "vg01", pdevice: "/dev/vdb1"}
+    - {srcpath: "/dev/vg02/lv01", destpath: "/vol2", vgname: "vg02", pdevice: "/dev/vdc1"}
+    - {srcpath: "/dev/vg03/lv01", destpath: "/vol3", vgname: "vg03", pdevice: "/dev/vdd1"}
+cdm_fstype: xfs

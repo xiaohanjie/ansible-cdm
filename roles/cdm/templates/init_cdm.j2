@@ -1,0 +1,52 @@
+source /root/.bashrc
+
+ERROR(){
+    /bin/echo -e "[ERROR] $@"
+}
+
+WARNING(){
+    /bin/echo -e "[WARNING] $@"
+}
+
+INFO(){
+    /bin/echo -e "[INFO] $@"
+}
+
+exists() {
+    type $1 > /dev/null 2>&1
+}
+
+  
+function init_cdm
+{
+{% if cdm_branch=='AB' %}
+cd AnyBackupServer
+./install.sh --product=CDM --server-type={{ server_type }} --self-ip={{ inventory_hostname }} --cluster-id={{ cdm_cluster_id }} --cluster-vip={{ cdm_cluster_vip }} --install-db=yes --db-id={{ cdm_db_id }} --db-vip={{ cdm_db_vip }}  --ssl=no
+{% elif cdm_branch=='HW' %}
+cd CDMServer
+./install.sh --node-type={{ server_type }} --cs-node=cluster --cluster-key={{ cdm_cluster_id }} --cluster-ip={{ cdm_cluster_vip }} --need-db=y --db-key={{ cdm_db_id }} --db-ip={{ cdm_db_vip }} --local-ip={{ inventory_hostname }}
+{% endif %}
+}
+
+function uninstall_cdm
+{
+{% if cdm_branch=='AB' %}
+cd AnyBackupServer
+echo "I'm sure" | ./uninstall.sh
+{% elif cdm_branch=='HW' %}
+cd CDMServer
+echo "yes" | ./uninstall.sh
+{% endif %}
+}
+
+$1
+init_result=$?
+echo $ansible_result
+
+if [ "$init_result" == "0" ]; then
+   INFO "task cdm ansible is success "
+else
+   ERROR "task cdm ansible is failure"
+   exit 1
+fi
+

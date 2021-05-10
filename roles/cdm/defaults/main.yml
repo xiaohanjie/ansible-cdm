@@ -1,0 +1,15 @@
+---
+
+cmd_make_datadirs: true
+
+install_cdm: false
+init_cdm: false
+uninstall_cdm: false
+
+cdm_server_dir: /CDMServer
+cdm_install_db: yes
+cdm_cluster_id: 111
+cdm_db_id: 222
+
+cdm_fstype: xfs
+cdm_repo: "ftp://ftp-ab.aishu.cn/FTP/ci-jobs/AB7.0StorageTest/package/AnyBackupServer/ABNormal/Linux_el7_x64/Linux_el7_x64-latest.tar.gz"

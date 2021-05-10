@@ -1,0 +1,23 @@
+- name: install cdm all node
+  shell: |
+    cd "{{ _cdm_install_dir }}"
+    ./init_cdm.sh init_cdm
+ # ignore_errors: yes
+  register: _install_cdm
+
+- name: display install output
+  debug: var=_install_cdm.stdout_lines
+
+#- name: uninstall cdm all node
+#  tags:
+#    - uninstall
+#  shell: |
+#    cd "{{ _cdm_install_dir }}"
+#    cd AnyBackupServer
+#    echo "I'm sure" | ./uninstall.sh
+#  register: _uninstall_cdm
+
+#- name: display install output
+#  tags:
+#    - uninstall
+#  debug: var=_uninstall_cdm.stdout_lines
