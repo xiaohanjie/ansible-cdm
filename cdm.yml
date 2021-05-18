@@ -1,5 +1,10 @@
-- name: "Prepare CDM7.0"
-  hosts: vms
+- name: "Prepare CDM server"
+  hosts: server
+  tags:
+    - server
+    - never
+    - lvm
+    - unlvm
   vars: 
     install_cdm: true
   vars_files:
@@ -7,8 +12,11 @@
   roles:
     - cdm
 
-- name: "Install CDM7.0"
-  hosts: vms
+- name: "Install CDM server"
+  hosts: server
+  tags:
+    - server
+    - never
   serial: 1
   vars:
     init_cdm: true
@@ -17,8 +25,21 @@
   roles:
     - cdm
 
-- name: "Uninstall CDM7.0"
-  hosts: vms
+
+- name: "Install CDM client"
+  hosts: client
+  tags:
+    - client
+    - never
+  vars:
+    install_client: true
+  vars_files:
+    - ./vars.yml
+  roles:
+    - cdm
+
+- name: "Uninstall CDM server"
+  hosts: server
   tags:
     - uninstall
     - never
@@ -30,3 +51,26 @@
   roles:
     - cdm
 
+- name: "Uninstall CDM client"
+  hosts: client
+  tags:
+    - uninstallclient
+    - never
+  vars:
+    uninstall_client: true
+  vars_files:
+    - ./vars.yml
+  roles:
+    - cdm
+
+- name: "Patch CDM server"
+  hosts: server
+  tags:
+    - patch
+    - never
+  vars:
+    patch_cdm: true
+  vars_files:
+    - ./vars.yml
+  roles:
+    - cdm

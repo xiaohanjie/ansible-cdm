@@ -1,6 +1,6 @@
 - name: uninstall cdm all node
   shell: |
-    cd "{{ cdm_server_dir }}"
+    cd "{{ cdm_dir }}"
     ./init_cdm.sh uninstall_cdm
   register: _uninstall_cdm
   ignore_errors: yes
@@ -10,7 +10,7 @@
 
 - name: Remove cdm directory 
   file:
-    path: "{{ cdm_server_dir }}"
+    path: "{{ cdm_dir }}"
     state: absent
   ignore_errors: yes
 
@@ -20,12 +20,14 @@
     uid: 2048
     state: absent
     remove: yes
+  when: cdm_branch == "HW"
 
 - name: Remove the HW group
   group:
     name: hwcdm
     gid: 2048
     state: absent
+  when: cdm_branch == "HW"
 
 - name: Remove the AB user
   user:
@@ -33,12 +35,14 @@
     uid: 2048
     state: absent
     remove: yes
+  when: cdm_branch == "AB"
 
 - name: Remove the AB group
   group:
     name: eab
     gid: 2048
     state: absent
+  when: cdm_branch == "AB"
 
 - name: unmount lvs
   mount:

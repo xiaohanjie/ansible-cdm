@@ -1,0 +1,110 @@
+- name: populate service facts
+  service_facts:
+
+- name: cdm install dir
+  set_fact:
+    _cdm_install_dir: "{{ cdm_dir }}"
+
+- name: Create the cdm server init_cmd.sh config
+  template:
+    src: patch_cdm.j2
+    dest: "{{ _cdm_install_dir  }}/patch_cdm.sh"
+    owner: "root"
+    group: "root"
+    mode: 0755
+
+- name: stop cdm service
+  service:
+    name: "{{ item }}"
+    state: stopped
+  when: 
+    - cdm_branch == "AB"
+    - cdm_service == "Nautilus"
+  loop:
+    - ABNautilusDataService.service
+    - ABNautilusMetaService.service
+    - ABNautilusTaskService.service
+    - ABNautilusThriftService.service
+
+- name: stop cdm service
+  service:
+    name: "{{ item }}"
+    state: stopped
+  when: 
+    - cdm_branch == "HW"
+    - cdm_service == "Nautilus"
+  loop:
+    - HWNautilusDataService.service
+    - HWNautilusMetaService.service
+    - HWNautilusTaskService.service
+    - HWNautilusThriftService.service
+
+- name: Compose the cdm patch url
+  set_fact:
+    _cdm_patch_download_url: "{{ cdm_patch_repo }}"
+
+- name: cdm install dir
+  set_fact:
+    _cdm_install_dir: "{{ cdm_dir }}"
+
+- name: Download the cdm patch package
+  get_url:
+    url: "{{ _cdm_patch_download_url }}"
+    dest: "{{ _cdm_install_dir }}/Patch_x64-latest.tar.gz"
+  register: _download_patch
+  until: _download_patch is succeeded
+  retries: 5
+  delay: 2
+
+- name: unarchive the cdm patch package
+  unarchive:
+    src: "{{ _cdm_install_dir }}/Patch_x64-latest.tar.gz"
+    remote_src: yes
+    dest: "{{ _cdm_install_dir }}"
+
+- name: Run cdm patch copy shell
+  shell: |
+    cd "{{ _cdm_install_dir }}"
+    ./patch_cdm.sh patch_cdm "{{ cdm_service }}" 
+#    rm -rf latest.tar.gz 
+
+- name: start cdm HWNautilus service
+  service:
+    name: "{{ item }}"
+    state: started
+  when: 
+    - cdm_branch == "HW"
+    - cdm_service == "Nautilus"
+  loop:
+    - HWNautilusDataService.service
+    - HWNautilusMetaService.service
+    - HWNautilusTaskService.service
+    - HWNautilusThriftService.service
+
+- name: wait for cdm HWNautilus service
+  shell: "systemctl status {{ item }} | grep Active"
+  register: _Nautilus_status
+  until: '"running" in _Nautilus_status.stdout'
+  retries: 3
+  delay: 15
+  when:
+    - cdm_branch == "HW"
+    - cdm_service == "Nautilus"
+  loop:
+    - HWNautilusDataService.service
+    - HWNautilusMetaService.service
+    - HWNautilusTaskService.service
+    - HWNautilusThriftService.service
+    
+- name: Start cdm service
+  service:
+    name: "{{ item }}"
+    state: started
+  when: 
+    - cdm_branch == "AB"
+    - cdm_service == "Nautilus"
+  loop:
+    - ABNautilusDataService.service
+    - ABNautilusMetaService.service
+    - ABNautilusTaskService.service
+    - ABNautilusThriftService.service
