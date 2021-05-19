@@ -317,17 +317,3 @@
     - cdm_service == "StorageResMgm"
   loop:
     - ABStorageResMgmService.service
-    - HWNautilusThriftService.service
-    
-- name: Start cdm service
-  service:
-    name: "{{ item }}"
-    state: started
-  when: 
-    - cdm_branch == "AB"
-    - cdm_service == "Nautilus"
-  loop:
-    - ABNautilusDataService.service
-    - ABNautilusMetaService.service
-    - ABNautilusTaskService.service
-    - ABNautilusThriftService.service
