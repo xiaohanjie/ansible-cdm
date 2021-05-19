@@ -3,8 +3,6 @@
   tags:
     - server
     - never
-    - lvm
-    - unlvm
   vars: 
     install_cdm: true
   vars_files:
